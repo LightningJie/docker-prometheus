@@ -2,11 +2,11 @@ global:
   #163服务器
   smtp_smarthost: 'smtp.163.com:465'
   #发邮件的邮箱
-  smtp_from: 'cdring@163.com'
+  smtp_from: 'zking1887415157@163.com'
   #发邮件的邮箱用户名，也就是你的邮箱　　　　　
-  smtp_auth_username: 'cdring@163.com'
+  smtp_auth_username: 'zking1887415157@163.com'
   #发邮件的邮箱密码
-  smtp_auth_password: 'your-password'
+  smtp_auth_password: 'HRd9tTCSAGzg7VP9'
   #进行tls验证
   smtp_require_tls: false
 
@@ -25,7 +25,7 @@ receivers:
 - name: 'email'
   #收邮件的邮箱
   email_configs:
-  - to: 'cdring@163.com'
+  - to: '3086662729@qq.com'
 inhibit_rules:
  - source_match:
      severity: 'critical'

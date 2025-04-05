@@ -1,0 +1,35 @@
+groups:
+- name: Blackbox
+  rules:
+  - alert: 黑盒子探测失败告警
+    expr: probe_success == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "黑盒子探测失败{{ $labels.instance }}"
+      description: "黑盒子检测失败，当前值：{{ $value }}"
+  - alert: 请求慢告警
+    expr: avg_over_time(probe_duration_seconds[1m]) > 10
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "请求慢{{ $labels.instance }}"
+      description: "请求时间超过1秒，值为：{{ $value }}"
+  - alert: http状态码检测失败
+    expr: probe_http_status_code <= 199 OR probe_http_status_code >= 400
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "http状态码异常{{ $labels.instance }}"
+      description: "http状态码不在正常范围，当前值：{{ $value }}"
+  - alert: SSL证书即将过期告警
+    expr: probe_ssl_earliest_cert_expiry - time()<86400*30
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "SSL证书即将过期{{ $labels.instance }}"
+      description: "SSL证书剩余有效期不足30天，当前剩余天数：{{ $value }}"

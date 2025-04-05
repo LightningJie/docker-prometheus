@@ -1,0 +1,39 @@
+groups:
+- name: mysql_monitoring_rules
+  rules:
+  # 服务器离线告警
+  - alert: MySQLServerOffline
+    expr: mysql_up == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "MySQL服务器离线"
+      description: "检测到MySQL服务器已停止运行，请立即检查。"
+  # 客户端连接数过高告警
+  - alert: MySQLClientConnectionsHigh
+    expr: mysql_global_status_threads_connected > mysql_global_variables_max_connections * 0.8
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "MySQL客户端连接数过高"
+      description: "当前MySQL客户端连接数已超过最大连接数的80%，可能影响服务性能，请关注。"
+  # 连接失败数过高告警
+  - alert: MySQLConnectionFailuresHigh
+    expr: delta(mysql_global_status_aborted_connects[5m]) > 10
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "MySQL连接失败数过高"
+      description: "在过去5分钟内，MySQL客户端建立连接失败数超过10次，请排查网络或认证相关问题。"
+  # 慢查询数过高告警
+  - alert: MySQLSlowQueriesHigh
+    expr: delta(mysql_global_status_slow_queries[5m]) > 5
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "MySQL慢查询数过高"
+      description: "在过去5分钟内，MySQL慢查询数超过5次，可能存在性能问题，请检查SQL语句。"
